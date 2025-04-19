@@ -7,14 +7,15 @@ public:
     Matrix(int numRows, int numCols);
     Matrix(int numRows, int numCols, int * nums, int sizeOfNums);
     ~Matrix();
+    Matrix& operator=(const Matrix& rhs);
     void clear();
     int getNumRows();
     int getNumCols();
-    bool populateMatrix(int * nums, int sizeOfNums);
-    bool addMatrix(const Matrix& rhs);
-    bool scaleMatrix(int scalar);
-    bool multiplyMatrix(const Matrix &rhs);
-    void transposeMatrix();
+    bool populate(int * nums, int sizeOfNums);
+    Matrix add(const Matrix& rhs);
+    Matrix scale(int scalar);
+    Matrix multiply(const Matrix &rhs);
+    Matrix transpose();
 private:
     int m_numRows;
     int m_numCols;

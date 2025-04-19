@@ -16,12 +16,16 @@ Matrix::Matrix(int numRows, int numCols, int *nums, int sizeOfNums) {
     m_numRows = numRows;
     m_numCols = numCols;
     m_matrix = buildMatrix(numRows, numCols);
-    populateMatrix(nums, sizeOfNums);
+    populate(nums, sizeOfNums);
 
 }
 
 Matrix::~Matrix() {
     clear();
+}
+
+Matrix &Matrix::operator=(const Matrix &rhs) {
+    // TODO: insert return statement here
 }
 
 void Matrix::clear() {
@@ -43,7 +47,7 @@ int Matrix::getNumCols() {
     return m_numCols;
 }
 
-bool Matrix::populateMatrix(int *nums, int sizeOfNums) {
+bool Matrix::populate(int *nums, int sizeOfNums) {
     if (sizeOfNums != (m_numRows * m_numCols)) {
         return false;
     }
@@ -57,62 +61,58 @@ bool Matrix::populateMatrix(int *nums, int sizeOfNums) {
     }
 }
 
-bool Matrix::addMatrix(const Matrix &rhs)
-{
-    if (m_numCols != rhs.m_numCols && m_numRows != rhs.m_numRows) {
-        return false;
+Matrix Matrix::add(const Matrix &rhs) {
+
+    Matrix newMatrix = Matrix(m_numRows, m_numCols);
+    if (m_numCols != rhs.m_numCols || m_numRows != rhs.m_numRows) {
+        //Error
     }
 
     for (int i = 0; i < m_numRows; i++) {
         for (int j = 0; j < m_numCols; j++) {
-            m_matrix[i][j] += rhs.m_matrix[i][j];
+            newMatrix.m_matrix[i][j] = m_matrix[i][j] + rhs.m_matrix[i][j];
         }
     }
+
+    return newMatrix;
 }
 
-bool Matrix::scaleMatrix(int scalar) {
+Matrix Matrix::scale(int scalar) {
+    Matrix newMatrix = Matrix(m_numRows, m_numCols);
     for (int i = 0; i < m_numRows; i++) {
         for (int j = 0; j < m_numCols; j++) {
-            m_matrix[i][j] *= scalar;
+            newMatrix.m_matrix[i][j] = m_matrix[i][j] * scalar;
         }
     }
 }
 
-bool Matrix::multiplyMatrix(const Matrix &rhs) {
+Matrix Matrix::multiply(const Matrix &rhs) {
     if (m_numCols != rhs.m_numRows) {
-        return false;
+        //Error
     }
-    int ** newMatrix = buildMatrix(m_numRows, rhs.m_numCols);
+    Matrix newMatrix = Matrix(m_numRows, rhs.m_numCols);
 
     for (int i = 0; i < m_numRows; i++) {
-    for (int j = 0; j < rhs.m_numCols; j++) {
+        for (int j = 0; j < rhs.m_numCols; j++) {
             for (int k = 0; k < m_numCols; k++) {
-                newMatrix[i][j] += m_matrix[i][k] * rhs.m_matrix[k][j];
+                newMatrix.m_matrix[i][j] += m_matrix[i][k] * rhs.m_matrix[k][j];
             }
         }
     }
 
-    clear();
-    m_numRows = m_numRows;
-    m_numCols = rhs.m_numCols;
-    m_matrix = newMatrix;
-    newMatrix = nullptr;
+    return newMatrix;
 }
 
-void Matrix::transposeMatrix() {
-    int ** newMatrix = buildMatrix(m_numCols, m_numRows);
+Matrix Matrix::transpose() {
+    Matrix newMatrix = Matrix(m_numCols, m_numRows);
 
     for (int i = 0; i < m_numRows; i++) {
         for (int j = 0; j < m_numCols; j++) {
-            newMatrix[j][i] = m_matrix[i][j];
+            newMatrix.m_matrix[j][i] = m_matrix[i][j];
         }
     }
 
-    clear();
-    m_numRows = m_numCols;
-    m_numCols = m_numRows;
-    m_matrix = newMatrix;
-    newMatrix = nullptr;
+    return newMatrix;
 }
 
 int ** Matrix::buildMatrix(int numRows, int numCols) {
