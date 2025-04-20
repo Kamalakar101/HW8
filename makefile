@@ -1,10 +1,10 @@
 CXX = g++
 CXXFLAGS = -Wall -g
 
-proj0: Matrix.o driver.cpp
+MatrixCPP: Matrix.o driver.cpp
 		$(CXX) $(CXXFLAGS) Matrix.o driver.cpp -o MatrixCPP
 
-solitaire.o: Matrix.cpp  Matrix.h
+Matrix.o: Matrix.cpp  Matrix.h
 		$(CXX) $(CXXFLAGS) -c Matrix.cpp
 
 run:
